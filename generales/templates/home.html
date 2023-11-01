@@ -1,0 +1,119 @@
+{% extends 'base.html' %}
+
+{% block titulo %}
+    - Inicio
+{% endblock %}
+
+{% block encabezado %}
+    Inicio
+{% endblock %}
+
+{% block contenido %}
+<style>
+    
+</style>
+    <!-- Imagenes -->
+    <div class="row">
+        <div class="col-lg-4 mb-0">
+            <div class="card shadow mb-4 border-left-primary">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Lectura con RFID</h6>
+                </div>
+                <div class="card-body" style="
+                    background-image: url('static/img/rfid.jpg'); 
+                    border-radius: 0 0 5px 5px;
+                    height: 100px;
+                    background-size: cover;
+                    background-position: center;
+                    background-repeat: no-repeat;
+                    position: relative;">
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4 mb-0">
+            <div class="card shadow mb-4 border-left-success">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Catálogos</h6>
+                </div>
+                <div class="card-body" style="
+                    background-image: url('static/img/catalogos.jpg'); 
+                    border-radius: 0 0 5px 5px;
+                    height: 100px;
+                    background-size: cover;
+                    background-position: center;
+                    background-repeat: no-repeat;
+                    position: relative;">
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4 mb-0">
+            <div class="card shadow mb-4 border-left-warning">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Datos</h6>
+                </div>
+                <div class="card-body" style="
+                    background-image: url('static/img/datos.jpg'); 
+                    border-radius: 0 0 5px 5px;
+                    height: 100px;
+                    background-size: cover;
+                    background-position: center;
+                    background-repeat: no-repeat;
+                    position: relative;">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Content Column -->
+        <div class="col-lg-9 mb-0">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Datos</h6>
+                </div>
+                <div class="card-body">
+                    <div class="chart-area">
+                        <canvas id="myAreaChart"></canvas>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-3 mb-0">
+            <!-- Approach -->
+            <div class="card shadow mb-4">
+                <div class="container mt-4">
+                    <div class="text-center">
+                        <img src="static/img/19371008.png" alt="Foto de perfil" class="perfil-img">
+                    </div>
+                    <h6 class="m-2 font-weight-bold text-primary text-center">Donaji Rivera Rosales</h6>
+                    <p class="font-weight-bold text-success text-center">
+                        <i class="fas fa-fw fa-map-marker-alt"></i><span>90300 Apizaco</span>
+                    </p>
+                </div>
+                
+            </div>
+
+        </div>
+    </div>
+    
+    
+    <style>
+        .perfil-img {
+            border-radius: 50%;
+            max-width: 100px;
+            height: auto;
+        }
+    </style>
+
+{% endblock %}
+
+{% block plugins %}
+<!-- Page level plugins -->
+<script src="static/vendor/chart.js/Chart.min.js"></script>
+
+<!-- Page level custom scripts -->
+<script src="static/js/demo/chart-area-demo.js"></script>
+<script src="static/js/demo/chart-pie-demo.js"></script>
+{% endblock %}
