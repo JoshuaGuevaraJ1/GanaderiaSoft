@@ -24,4 +24,6 @@ from django.urls import path, include
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('generales.urls')),
+    path('catalogos/', include('catalogos.urls')),
 ]
+urlpatterns+= staticfiles_urlpatterns() #Para poder mostrar archivos estáticos
