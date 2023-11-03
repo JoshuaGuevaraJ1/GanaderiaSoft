@@ -12,5 +12,5 @@ class Razas(models.Model):
     tipoAnimal = models.ForeignKey(TipoAnimal, on_delete=models.CASCADE)
 
     def __str__(self):
-        return "%s - %s" % (self.tipoAnimal, self.raza)
+        return "%s de raza %s" % (self.tipoAnimal, self.raza)
     
