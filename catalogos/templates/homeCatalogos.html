@@ -4,3 +4,44 @@
     - Catálogos
 {% endblock %}
 
+{% block encabezado %}
+    Tipo de animales
+{% endblock %}
+
+{% block contenido%}
+    <div class="row">
+        <a class="col-lg-3 mb-0" href="{% url 'tipoAnimales' %}"> 
+            <div class="card shadow mb-4 border-left-primary">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Razas de animales</h6>
+                </div>
+                <div class="card-body" style="
+                    background-image: url('../../static/img/rfid.jpg'); 
+                    border-radius: 0 0 5px 5px;
+                    height: 100px;
+                    background-size: cover;
+                    background-position: center;
+                    background-repeat: no-repeat;
+                    position: relative;">
+                </div>
+            </div>
+        </a>
+
+        <a class="col-lg-3 mb-0" href="{% url 'tipoAnimales' %}"> 
+            <div class="card shadow mb-4 border-left-warning">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Animales</h6>
+                </div>
+                <div class="card-body" style="
+                    background-image: url('../../static/img/datos.jpg'); 
+                    border-radius: 0 0 5px 5px;
+                    height: 100px;
+                    background-size: cover;
+                    background-position: center;
+                    background-repeat: no-repeat;
+                    position: relative;">
+                </div>
+            </div>
+        </a>
+    </div>
+{% endblock %}
