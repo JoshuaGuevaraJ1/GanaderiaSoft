@@ -19,5 +19,24 @@ from catalogos import views
 
 urlpatterns = [
     path('homeCatalogos', views.homeCatalogos, name='homeCatalogos'),
-    path('tipoAnimales', views.tipoAnimal, name='tipoAnimales'),
+    path('rfid', views.rfid, name='rfid'),
+
+    path('razas/lista', views.razasList, name='razasList'),
+    path('raza/agregar', views.razaCreate, name='razaCreate'),
+    path('raza/editar/<int:pk>', views.razaUpdate, name='razaUpdate'),
+    path('raza/eliminar/<int:pk>', views.razaDelete, name='razaDelete'),
+
+    path('grupo/lista', views.grupoList, name='grupoList'),
+    path('grupo/agregar', views.grupoCreate, name='grupoCreate'),
+    path('grupo/editar/<int:pk>', views.grupoUpdate, name='grupoUpdate'),
+    path('grupo/eliminar/<int:pk>', views.grupoDelete, name='grupoDelete'),
+    
+    path('animal/list', views.animalList, name='animalList'),
+    path('animal/agregar', views.animalCreate, name='animalCreate'),
+    path('animal/editar/<int:pk>', views.animalUpdate, name='animalUpdate'),
+    path('animal/eliminar/<int:pk>', views.animalDelete, name='animalDelete'),
+
+    path('buscar_ganado', views.buscar_ganado, name='buscar_ganado'),
+    path('generarpdf/', views.generarpdf, name='generarpdf'),
+    path('generar_informe_pdf/', views.generar_informe_pdf, name='generar_informe_pdf'),
 ]

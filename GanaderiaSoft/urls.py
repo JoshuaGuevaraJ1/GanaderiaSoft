@@ -23,7 +23,10 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('generales.urls')),
+    path('inicio/', include('generales.urls')),
     path('catalogos/', include('catalogos.urls')),
+    path('', include('usuarios.urls')),
 ]
 urlpatterns+= staticfiles_urlpatterns() #Para poder mostrar archivos estáticos
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

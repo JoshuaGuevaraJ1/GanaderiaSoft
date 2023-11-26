@@ -5,41 +5,59 @@
 {% endblock %}
 
 {% block encabezado %}
-    Tipo de animales
+    Todos los catálogos
 {% endblock %}
+
+{% block extraCSS %}
+<style>
+    .bgImageDiv1{
+        background-image: url('../static/img/rfid.jpg');
+    }
+    .bgImageDiv2{
+        background-image: url('../static/img/catalogos.jpg');
+    }
+    .bgImageDiv3{
+        background-image: url('../static/img/datos.jpg');
+    }
+
+    .bgImageCard{
+        background-size: cover;
+        background-position: center center;
+        height:200px;
+        border-radius:0 0 5px 0;
+    }
+    
+</style>
+{% endblock extraCSS %}
 
 {% block contenido%}
     <div class="row">
-        <a class="col-lg-3 mb-0" href="{% url 'tipoAnimales' %}"> 
-            <div class="card shadow mb-4 border-left-primary">
+        <a class="col-lg-4 mb-0" href="{% url 'razasList' %}"> 
+            <div class="card shadow mb-4 border-left-success">
                 <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary">Razas de animales</h6>
+                    <h6 class="m-0 font-weight-bold text-success">Razas de animales</h6>
                 </div>
-                <div class="card-body" style="
-                    background-image: url('../../static/img/rfid.jpg'); 
-                    border-radius: 0 0 5px 5px;
-                    height: 100px;
-                    background-size: cover;
-                    background-position: center;
-                    background-repeat: no-repeat;
-                    position: relative;">
+                <div class="card-body bgImageDiv1 bgImageCard">
                 </div>
             </div>
         </a>
 
-        <a class="col-lg-3 mb-0" href="{% url 'tipoAnimales' %}"> 
+        <a class="col-lg-4 mb-0" href="{% url 'grupoList' %}"> 
             <div class="card shadow mb-4 border-left-warning">
                 <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary">Animales</h6>
+                    <h6 class="m-0 font-weight-bold text-warning">Grupos de animales</h6>
                 </div>
-                <div class="card-body" style="
-                    background-image: url('../../static/img/datos.jpg'); 
-                    border-radius: 0 0 5px 5px;
-                    height: 100px;
-                    background-size: cover;
-                    background-position: center;
-                    background-repeat: no-repeat;
-                    position: relative;">
+                <div class="card-body bgImageDiv2 bgImageCard">
+                </div>
+            </div>
+        </a>
+
+        <a class="col-lg-4 mb-0" href="{% url 'animalList' %}"> 
+            <div class="card shadow mb-4 border-left-danger">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-danger">Animales</h6>
+                </div>
+                <div class="card-body bgImageDiv3 bgImageCard">
                 </div>
             </div>
         </a>

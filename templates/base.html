@@ -25,30 +25,40 @@
     <link href="{% static 'css/sb-admin-2.min.css' %}" rel="stylesheet">
 
     {% block extraCSS %}
+    
     {% endblock %}
     
-<style>
-    .bgImage{
-        background-image: url('{% static "img/bgMenu.jpg" %}');
-        background-size: cover;
-    }
-</style>
+    <style>
+        .bgImage{
+            background-image: url('{% static "img/bgSignin.jpg" %}');
+            background-size: cover;
+            background-position: center center;
+        }
+        .blur{
+            backdrop-filter: blur(30px);
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+        .blurInput{
+            backdrop-filter: blur(30px);
+            background-color: rgba(255, 255, 255, 0);
+        }
+    </style>
 
 </head>
 
 <body id="page-top">
 
     <!-- Page Wrapper -->
-    <div id="wrapper">
+    <div id="wrapper" class="bgImage">
         <!-- Sidebar -->
         <ul class="navbar-nav sidebar sidebar-dark accordion 
-        bgImage" /* Añade la imagen con efecto de desenfoque */
+        blur" /* Añade la imagen con efecto de desenfoque */
         id="accordionSidebar">
 
             <!-- Sidebar - Brand -->
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{% url 'inicio' %}">
                 <div class="sidebar-brand-icon rotate-n-15">
-                    <i class="fas fa-piggy-bank"></i>
+                    <img src="{% static 'img/logo.png' %}" width="40" height="40" alt="Logo">
                 </div>
                 <div class="sidebar-brand-text mx-3">Ganadería Soft <sup>2</sup></div>
             </a>
@@ -59,34 +69,19 @@
             <!-- Nav Item - Dashboard -->
             <li class="nav-item">
                 <a class="nav-link" href={% url "inicio" %}>
-                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <i class="fas fa-home"></i>
                     <span>Inicio</span></a>
             </li>
-
-            <!-- Divider -->
-            <hr class="sidebar-divider">
-
-            <!-- Heading -->
-            <div class="sidebar-heading">
-                Interface
-            </div>
-
-            <!-- Nav Item - Pages Collapse Menu -->
             <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
-                    aria-expanded="true" aria-controls="collapseTwo">
-                    <i class="fas fa-fw fa-cog"></i>
-                    <span>Components</span>
-                </a>
-                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Custom Components:</h6>
-                        <a class="collapse-item" href="buttons.html">Buttons</a>
-                        <a class="collapse-item" href="cards.html">Cards</a>
-                    </div>
-                </div>
+                <a class="nav-link" href={% url "rfid" %}>
+                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <span>Lectura RFID</span></a>
             </li>
-
+            <li class="nav-item">
+                <a class="nav-link" href={% url 'generarpdf' %}>
+                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <span>Generar informes</span></a>
+            </li>
             <!-- Divider -->
             <hr class="sidebar-divider">
 
@@ -107,7 +102,9 @@
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Catálogos:</h6>
                         <a class="collapse-item" href={% url "homeCatalogos" %}>Todos los catálogos</a>
-                        <a class="collapse-item" href={% url "tipoAnimales" %}>Tipos de animales</a>
+                        <a class="collapse-item" href={% url "animalList" %}>Listado de ganado</a>
+                        <a class="collapse-item" href={% url "razasList" %}>Razas</a>
+                        <a class="collapse-item" href={% url "grupoList" %}>Grupos de ganado</a>
                     </div>
                 </div>
             </li>            
@@ -137,19 +134,8 @@
                         <i class="fa fa-bars"></i>
                     </button>
 
-                    <!-- Topbar Search -->
-                    <form
-                        class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
-                        <div class="input-group">
-                            <input type="text" class="form-control bg-light border-0 small" placeholder="Buscar por..."
-                                aria-label="Search" aria-describedby="basic-addon2">
-                            <div class="input-group-append">
-                                <button class="btn btn-primary" type="button">
-                                    <i class="fas fa-search fa-sm"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </form>
+                    <h1 class="h3 mb-0 text-gray-800">{% block encabezado %} {% endblock %}
+                    </h1>
 
                     <!-- Topbar Navbar -->
                     <ul class="navbar-nav ml-auto">
@@ -301,9 +287,19 @@
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Douglas McGee</span>
+                                {% if request.user.is_authenticated %}
+                                    <span class="mr-2 d-none d-lg-inline text-gray-600 small">
+                                        {{ request.user.username }}
+                                    </span>
+                                    <br>
+                                    <span class="mr-2 d-none d-lg-inline text-gray-600 small">
+                                        {{ request.user.first_name }} {{ request.user.last_name }}
+                                    </span>
+                                {% endif %}
+                                {% if request.user.is_authenticated %}
                                 <img class="img-profile rounded-circle"
-                                    src="{% static 'img/undraw_profile.svg' %}">
+                                    src="{% static 'img/users/' %}{{ user.username }}.png" alt="{{user.username}}">
+                                {% endif %}
                             </a>
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
@@ -320,11 +316,12 @@
                                     <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Registro de actividades
                                 </a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
-                                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Cerrar sesión
-                                </a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                                        <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                        Cerrar sesión
+                                    </a>
+                                {% comment %} {% endif %} {% endcomment %}
                             </div>
                         </li>
 
@@ -337,8 +334,9 @@
                 <div class="container-fluid">
                     <!-- Page Heading -->
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                        <h1 class="h3 mb-0 text-gray-800">{% block encabezado %} {% endblock %}
-                        </h1>
+                        <h1></h1>
+                        {% block botonSupIZQ %}
+                        {% endblock %}
                         <!-- <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
                                 class="fas fa-download fa-sm text-white-50"></i> Generate Report</a> -->
                     </div>
@@ -386,7 +384,7 @@
                 <div class="modal-body">Selecciona "Cerrar sesión" si estás seguro de cerrar tu sesión.</div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
-                    <a class="btn btn-primary" href="{% static 'login.html' %}">Cerrar SESIÓN</a>
+                    <a class="btn btn-danger" href={% url "signout" %}>Cerrar sesión</a>
                 </div>
             </div>
         </div>

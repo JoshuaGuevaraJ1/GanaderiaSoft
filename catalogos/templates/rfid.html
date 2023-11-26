@@ -1,0 +1,193 @@
+{% extends 'base.html' %}
+
+{% block titulo %}
+    - Lectura RFID
+{% endblock %}
+
+{% block extraCSS %}
+    <!-- Custom styles for this page -->
+<link href="../../static/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+<style>
+    .circle-background {
+        width: 90px;
+        height: 90px;
+        border-radius: 50%;
+        overflow: hidden;
+        object-fit: cover;
+    }
+</style>
+{% endblock %}
+
+{% block encabezado %}
+    Lectura RFID
+{% endblock %}
+
+{% block contenido %}
+<div class="row">
+    <div class="col-lg-3">
+        <!-- Basic Card Example -->
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Lectura del tag RFID del ganado</h6>
+            </div>
+            <div class="card-body">
+                <input type="text" id="rfidInput" class="form-control" placeholder="Escanea el RFID aquí" autofocus  oninput="leerRFID()">
+                <label id="rfidRepetido" style="color: red; margin-top: 10px;"></label>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-9">
+        <!-- Basic Card Example -->
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Datos del ganado detectado</h6>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered" id="tablaGanado" width="100%" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>No. RFID</th>
+                                <th>Nombre</th>
+                                <th>Grupo y Raza</th>
+                                <th>Fecha de llegada</th>
+                                <th>Fecha de salida</th>
+                            </tr>
+                        </thead>
+                                    
+                        <tbody>
+                            
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="col-lg-12">
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Datos de todos los RFID del ganado leídos</h6>
+            <audio id="success" style="display: none">
+                <source src="../../static/sounds/successRFID2.mp3" type="audio/mpeg">
+                Tu navegador no admite la reproducción de audio.
+            </audio>
+            
+              <audio id="error" style="display: none">
+                <source src="../../static/sounds/errorRFID.mp3" type="audio/mpeg">
+                Tu navegador no admite la reproducción de audio.
+              </audio>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered tablaListado" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>No. RFID</th>
+                            <th>Nombre</th>
+                            <th>Grupo y Raza</th>
+                            <th>Fecha de llegada</th>
+                            <th>Fecha de salida</th>
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        <tr>
+                            <th>No. RFID</th>
+                            <th>Nombre</th>
+                            <th>Grupo y Raza</th>
+                            <th>Fecha de llegada</th>
+                            <th>Fecha de salida</th>
+                        </tr>
+                    </tfoot>                
+                    <tbody>
+                        
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+{% endblock %}
+
+{% block plugins %}
+<script>
+    $(document).ready(function() {
+        $('#rfidInput').on('input', function() {
+            var rfid = $(this).val();
+            if (rfid.length === 10) {
+                
+            }
+        });
+    });
+</script>
+<script>
+    var rfidLeidos = [];
+
+    function leerRFID() {
+        var rfid = document.getElementById('rfidInput').value;
+        
+        var rfidInput = document.getElementById('rfidInput');
+        var rfidRepetido = document.getElementById('rfidRepetido');
+        var rfid = rfidInput.value;
+
+        if (rfid.length === 10 && !rfidLeidos.includes(rfid)) {
+            rfidRepetido.innerText = '';
+
+            $.ajax({
+                url: 'buscar_ganado',
+                data: {rfid:rfid},
+                dataType: 'json',
+                success: function(data) {
+                    
+                    if (data.error) {
+                        var audio = document.getElementById('error');
+                        audio.play();
+                        alert(data.error);
+                    } else {
+                        
+                        var audio = document.getElementById('success');
+                        audio.play();
+                        var tablaReal = $('#tablaGanado tbody');
+                        var tablaListado = $('.tablaListado tbody');
+                        tablaReal.empty();
+                        tablaReal.append(
+                            '<tr>'+
+                                '<td><img src="'+ data.imagenURL + '" alt="'+data.rfid+'" class="circle-background"></td>'+
+                                '<td>' + data.rfid + '</td>'+
+                                '<td>' + data.nombre + '</td>'+
+                                '<td>' + data.raza + '</td>'+
+                                '<td>' + data.fechaLlegada + '</td>'+
+                                '<td>' + data.fechaSalida + '</td>'
+                        );
+                        // Agregar el RFID a la lista de leídos
+                        rfidLeidos.push(rfid);
+
+                        tablaListado.append(
+                            '<tr>'+
+                                '<td>' + data.rfid + '</td>'+
+                                '<td>' + data.nombre + '</td>'+
+                                '<td>' + data.raza + '</td>'+
+                                '<td>' + data.fechaLlegada + '</td>'+
+                                '<td>' + data.fechaSalida + '</td>'
+                        );
+                    }
+                    $('#rfidInput').val('');
+                    
+                }
+            });
+        } else if (rfidLeidos.includes(rfid)) {
+            rfidRepetido.innerText = 'RFID ya leído';
+            $('#rfidInput').val('');
+        }else{
+            rfidRepetido.innerText = ''; // Limpiar el mensaje de RFID repetido
+        }
+    }
+</script>
+
+{% endblock %}
